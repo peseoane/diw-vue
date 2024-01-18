@@ -1,5 +1,6 @@
 <template>
-  <div id="tabla-clientes" class="container grid">
+  <div id="tabla-clientes" class="container grid p-4">
+    <h3 class="text-center p-4 border-top border-black">Lista de clientes</h3>
     <table class="table border-black justify-content-center">
       <thead>
         <tr class="text-center fw-bolder">
@@ -23,8 +24,8 @@
           </td>
           <td>{{ cliente.email }}</td>
           <td class="">
-            <button class="btn btn-danger me-2">Eliminar</button>
-            <button class="btn btn-warning">Editar</button>
+            <button class="btn btn-danger me-2 bi bi-pencil"></button>
+            <button class="btn btn-warning bi bi-trash"></button>
           </td>
         </tr>
       </tbody>
