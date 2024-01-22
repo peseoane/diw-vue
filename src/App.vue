@@ -1,6 +1,5 @@
 <template>
   <Nav></Nav>
-  <FormularioClientes></FormularioClientes>
   <TableClientes></TableClientes>
 </template>
 
