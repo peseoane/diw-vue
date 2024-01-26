@@ -1,17 +1,15 @@
 <template>
-    <Nav></Nav>
-    <TableClientes></TableClientes>
+  <Nav></Nav>
+  <router-view></router-view>
 </template>
 
 <script>
-import TableClientes from "@/components/TableClientes.vue";
 import Nav from "@/components/Nav.vue";
 export default {
-    name: "App",
-    components: {
-        TableClientes,
-        Nav
-    }
+  name: "App",
+  components: {
+    Nav
+  }
 };
 </script>
 

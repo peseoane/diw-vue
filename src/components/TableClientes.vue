@@ -56,6 +56,7 @@
 </template>
 <script>
 import Swal from "sweetalert2";
+import response from "assert";
 
 export default {
     name: "TableClientes",
@@ -82,6 +83,32 @@ export default {
         };
     },
     methods: {
+        async obtenerClientes() {
+            try {
+                const res = await fetch("http://localhost:3000/clientes");
+
+                if (!response.ok) {
+                    throw Error(response.statusText);
+                }
+
+                const data = await res.json();
+
+                this.clientes = data;
+
+            } catch (error) {
+              Swal.fire({
+                title: "Error",
+                text: error,
+                icon: "error",
+                customClass: {
+                  container: "custom-alert-container",
+                  popup: "custom-alert-popup",
+                  confirmButton: "custom-alert-button"
+                }
+              });
+            }
+        },
+
         mostrarAlerta(mensaje, tipo) {
             Swal.fire({
                 title: mensaje,
