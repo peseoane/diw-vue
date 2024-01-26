@@ -60,26 +60,17 @@ import response from "assert";
 
 export default {
     name: "TableClientes",
+    mounted() {
+        this.obtenerClientes();
+    },
     data() {
         return {
+            clientes: [],
+            clienteSeleccionado: null,
             nombre: "",
             apellido: "",
             dni: "",
-            email: "",
-            clientes: [
-                {
-                    nombre: "Juan",
-                    apellido: "Perez",
-                    dni: "12345678",
-                    email: "juan.perez@hotmail.com"
-                },
-                {
-                    nombre: "Maria",
-                    apellido: "Gomez",
-                    dni: "87654321",
-                    email: "maria.gomez@gmail.com"
-                }
-            ]
+            email: ""
         };
     },
     methods: {
@@ -87,25 +78,24 @@ export default {
             try {
                 const res = await fetch("http://localhost:3000/clientes");
 
-                if (!response.ok) {
-                    throw Error(response.statusText);
+                if (!res.ok) {
+                    throw Error(res.statusText);
                 }
 
                 const data = await res.json();
 
                 this.clientes = data;
-
             } catch (error) {
-              Swal.fire({
-                title: "Error",
-                text: error,
-                icon: "error",
-                customClass: {
-                  container: "custom-alert-container",
-                  popup: "custom-alert-popup",
-                  confirmButton: "custom-alert-button"
-                }
-              });
+                Swal.fire({
+                    title: "Error",
+                    text: error,
+                    icon: "error",
+                    customClass: {
+                        container: "custom-alert-container",
+                        popup: "custom-alert-popup",
+                        confirmButton: "custom-alert-button"
+                    }
+                });
             }
         },
 
