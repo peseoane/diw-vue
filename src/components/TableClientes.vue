@@ -47,7 +47,7 @@
                     <td>{{ cliente.email }}</td>
                     <td class="">
                         <button class="btn btn-danger me-2 bi bi-pencil"></button>
-                        <button class="btn btn-warning bi bi-trash" @click="eliminarCliente(cliente.id)"></button>
+                        <button class="btn btn-warning bi bi-trash" @click="deleteUsuario(cliente.id)"></button>
                     </td>
                 </tr>
             </tbody>
@@ -61,7 +61,7 @@ import response from "assert";
 export default {
     name: "TableClientes",
     mounted() {
-        this.obtenerClientes();
+        this.getUsuarios();
     },
     data() {
         return {
@@ -74,31 +74,6 @@ export default {
         };
     },
     methods: {
-        async obtenerClientes() {
-            try {
-                const res = await fetch("http://localhost:3000/clientes");
-
-                if (!res.ok) {
-                    throw Error(res.statusText);
-                }
-
-                const data = await res.json();
-
-                this.clientes = data;
-            } catch (error) {
-                Swal.fire({
-                    title: "Error",
-                    text: error,
-                    icon: "error",
-                    customClass: {
-                        container: "custom-alert-container",
-                        popup: "custom-alert-popup",
-                        confirmButton: "custom-alert-button"
-                    }
-                });
-            }
-        },
-
         mostrarAlerta(mensaje, tipo) {
             Swal.fire({
                 title: mensaje,
@@ -109,13 +84,6 @@ export default {
                     confirmButton: "custom-alert-button"
                 }
             });
-        },
-        limpiar() {
-            this.nombre = "";
-            this.apellido = "";
-            this.dni = "";
-            this.email = "";
-            this.mostrarAlerta("Cliente agregado correctamente", "success");
         },
         validarDniNie(dni) {
             const dniNie = this.dni.trim().toUpperCase();
@@ -143,41 +111,118 @@ export default {
                 return false;
             }
         },
-        guardar() {
-            // Sanitizar datos
-            if (
-                this.nombre.trim() === "" ||
-                this.apellido.trim() === "" ||
-                this.dni.trim() === "" ||
-                this.email.trim() === ""
-            ) {
-                this.mostrarAlerta("Todos los campos son obligatorios", "error");
-            } else {
-                const nuevoCliente = {
-                    nombre: this.nombre,
-                    apellido: this.apellido,
-                    dni: this.dni,
-                    email: this.email
-                };
-                this.clientes.push(nuevoCliente);
-                this.mostrarAlerta("Cliente agregado correctamente", "success");
-                this.nombre = nuevoCliente.nombre;
-                this.apellido = nuevoCliente.apellido;
-                this.dni = nuevoCliente.dni;
-                this.email = nuevoCliente.email;
-                this.$emit("agregarCliente", nuevoCliente);
-                this.limpiar();
-            }
+        getUsuarios() {
+            fetch("http://localhost:3004/clientes")
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    this.clientes = data;
+                })
+                .catch(error => {
+                    this.mostrarAlerta(error.message, "error");
+                });
         },
-        eliminarCliente(id) {
-            const index = this.clientes.findIndex(cliente => cliente.id === id);
+        postUsuario() {
+            const newUser = {
+                nombre: this.nombre,
+                apellido: this.apellido,
+                dni: this.dni,
+                email: this.email
+            };
 
-            if (index !== -1) {
-                this.clientes.splice(index, 1);
-                this.mostrarAlerta("Cliente eliminado correctamente", "alert-success");
-            } else {
-                this.mostrarAlerta("Cliente no encontrado", "alert-danger");
+            fetch("http://localhost:3004/clientes", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(newUser)
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    this.getUsuarios();
+                    this.nombre = "";
+                    this.apellido = "";
+                    this.dni = "";
+                    this.email = "";
+                })
+                .catch(error => {
+                    this.mostrarAlerta(error.message, "error");
+                });
+        },
+        putUsuario() {
+            if (this.clienteSeleccionado === null) {
+                this.mostrarAlerta("No user selected", "error");
+                return;
             }
+
+            const updatedUser = {
+                nombre: this.nombre,
+                apellido: this.apellido,
+                dni: this.dni,
+                email: this.email
+            };
+
+            fetch(`http://localhost:3004/clientes/${this.clienteSeleccionado}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(updatedUser)
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    this.getUsuarios();
+                    this.nombre = "";
+                    this.apellido = "";
+                    this.dni = "";
+                    this.email = "";
+                })
+                .catch(error => {
+                    this.mostrarAlerta(error.message, "error");
+                });
+        },
+        deleteUsuario(id) {
+            if (id === null) {
+                this.mostrarAlerta("Invalid user ID", "error");
+                return;
+            }
+
+            fetch(`http://localhost:3004/clientes/${id}`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    this.getUsuarios();
+                    this.nombre = "";
+                    this.apellido = "";
+                    this.dni = "";
+                    this.email = "";
+                })
+                .catch(error => {
+                    this.mostrarAlerta(error.message, "error");
+                });
         }
     }
 };
