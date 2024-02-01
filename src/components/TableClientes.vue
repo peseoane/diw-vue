@@ -56,7 +56,6 @@
 </template>
 <script>
 import Swal from "sweetalert2";
-import response from "assert";
 
 export default {
     name: "TableClientes",
