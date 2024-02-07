@@ -6,6 +6,6 @@ const tareaSchema = new Schema({
     descripcion: String,
     fecha: String,
     prioridad: String
-})
+});
 
-export default mongoose.model('tarea',tareaSchema)
+export default mongoose.model("tarea", tareaSchema);

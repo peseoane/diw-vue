@@ -1,17 +1,16 @@
-version: '3.1'
+version: "3.1"
 
 services:
-
-  mongo:
-    image: mongo
-    container_name: diw-mongo
-    restart: always
-    environment:
-      MONGO_INITDB_DATABASE: diw
-    ports:
-      - 27017:27017
-    volumes:
-      - vue-mongo:/data/db
+    mongo:
+        image: mongo
+        container_name: diw-mongo
+        restart: always
+        environment:
+            MONGO_INITDB_DATABASE: diw
+        ports:
+            - 27017:27017
+        volumes:
+            - vue-mongo:/data/db
 
 volumes:
     vue-mongo:

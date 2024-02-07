@@ -1,17 +1,16 @@
-const { VueLoaderPlugin }= require('vue-loader')
-const path = require('path')
-
+const {VueLoaderPlugin} = require("vue-loader");
+const path = require("path");
 
 module.exports = {
-    entry: './src/main.js',
+    entry: "./src/main.js",
     output: {
-        path: path.resolve(__dirname, 'public/js'),
-        filename: 'bundle.js'
+        path: path.resolve(__dirname, "public/js"),
+        filename: "bundle.js"
     },
     resolve: {
         alias: {
-            '@': path.resolve(__dirname, 'src'),
-        },
+            "@": path.resolve(__dirname, "src")
+        }
     },
 
     module: {
@@ -20,35 +19,33 @@ module.exports = {
                 test: /\.js$/,
                 exclude: /node_modules/,
                 use: {
-                    loader: 'babel-loader'
+                    loader: "babel-loader"
                 }
             },
             {
                 test: /\.vue$/,
                 use: {
-                    loader: 'vue-loader'
+                    loader: "vue-loader"
                 }
             },
             {
                 test: /\.(png|jpe?g|gif)$/i,
                 use: [
                     {
-                        loader: 'file-loader',
+                        loader: "file-loader",
                         options: {
-                            outputPath: 'images', // Puedes ajustar la carpeta de salida segÃºn tus necesidades
-                        },
-                    },
-                ],
+                            outputPath: "images" // Puedes ajustar la carpeta de salida segÃºn tus necesidades
+                        }
+                    }
+                ]
             },
             {
                 test: /\.css$/,
                 use: {
-                    loader: 'css-loader'
+                    loader: "css-loader"
                 }
             }
         ]
     },
-    plugins : [
-        new VueLoaderPlugin()
-    ]
-}
+    plugins: [new VueLoaderPlugin()]
+};
