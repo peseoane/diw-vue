@@ -1,23 +1,23 @@
-import PaginaPrincipal from '@/components/PaginaPrincipal.vue';
-import TableClientes from "@/components/TableClientes.vue";
-import {createRouter, createWebHistory} from "vue-router";
+import { createRouter, createWebHistory } from 'vue-router'
+import TableClientes from '@/components/TableClientes.vue'
+import PaginaInicio from '@/components/PaginaInicio.vue'
 
 const routes = [
-    {
-        path: '/',
-        name: 'PaginaInicial',
-        component: PaginaPrincipal
-    },
-    {
-        path: '/clientes',
-        name: 'TableClientes',
-        component: TableClientes
-    }
-];
+  {
+    path: '/',
+    name:'paginainicio',
+    component: PaginaInicio
+  },
+  {
+    path: '/clientes',
+    name: 'clientes',
+    component: TableClientes
+  }
+]
 
 const router = createRouter({
-    history: createWebHistory(),
-    routes
-});
+  history: createWebHistory(process.env.BASE_URL),
+  routes
+})
 
-export default router;
+export default router
