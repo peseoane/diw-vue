@@ -3,14 +3,16 @@ import http from "http";
 import morgan from "morgan";
 import tareasRouter from "./router/tareas.mjs";
 import mongoose from "mongoose";
+import cors from 'cors';
 
-//const mongoose = require('mongoose');
 const app = express();
 const server = http.createServer(app);
 
-app.use("/tareas", tareasRouter);
+app.use(cors()); // Use cors middleware before your routes
 app.use(morgan("dev"));
 app.use(express.json());
+
+app.use("/tareas", tareasRouter); // Your routes come after cors
 
 app.set("port", process.env.PORT || 5000);
 

@@ -16,7 +16,8 @@ export default {
       descripcion: "",
       fecha: "",
       prioridad: "alta",
-      tareas: []
+      tareas: [],
+      prioridades: ["alta", "media", "baja"]
     };
   },
 
@@ -42,7 +43,7 @@ export default {
         if (
           ["alta",
            "media",
-           "baja"].includes(nuevaTarea.prioridad) {
+           "baja"].includes(nuevaTarea.prioridad)) {
           const res = await fetch("http://localhost:5000/tareas", {
             method: "POST",
             headers: {
@@ -73,7 +74,21 @@ export default {
           text: error.message
         });
       }
+    },
+  async obtenerTareas() {
+    try {
+      const res = await fetch("http://localhost:5000/tareas");
+      if (!res.ok) {
+        const message = `An error has occurred: ${res.status}`;
+        throw new Error(message);
+      }
+
+      this.tareas = await res.json();
+      console.log(this.tareas);
+    } catch (error) {
+      console.log(error);
     }
+  }
   }
 };
 </script>
