@@ -15,6 +15,35 @@ rutas.get("/", async (req, res) => {
 //     console.log(new Tarea());
 // })
 
+// Peticion para actualizar una tarea
+rutas.put("/:id", async (req, res) => {
+    try {
+        const tareaId = req.params.id;
+
+        const tareaExistente = await tarea.findById(tareaId);
+        if (!tareaExistente) {
+            return res.status(404).json({
+                error: "Tarea no encontrada"
+            });
+        }
+
+        tareaExistente.set(req.body);
+        await tareaExistente.save();
+
+        console.log(tareaExistente);
+
+        res.json({
+            status: "Tarea actualizada"
+        });
+    } catch (error) {
+        console.error("Error al actualizar la tarea:", error);
+        res.status(500).json({
+            error: "Error al actualizar la tarea"
+        });
+    }
+});
+
+// Peticion para subir tarea
 rutas.post("/", async (req, res) => {
     try {
         const nuevatarea = new tarea(req.body);

@@ -4,6 +4,7 @@ import morgan from "morgan";
 import tareasRouter from "./router/tareas.mjs";
 import mongoose from "mongoose";
 
+//const mongoose = require('mongoose');
 const app = express();
 const server = http.createServer(app);
 

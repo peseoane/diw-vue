@@ -1,6 +1,7 @@
 import {createRouter, createWebHistory} from "vue-router";
 import TableClientes from "@/components/TableClientes.vue";
 import PaginaInicio from "@/components/PaginaInicio.vue";
+import TablaTareas from "@/components/TablaTareas.vue";
 
 const routes = [
     {
@@ -12,6 +13,11 @@ const routes = [
         path: "/clientes",
         name: "clientes",
         component: TableClientes
+    },
+    {
+        path: "/tareas",
+        name: "tareas",
+        component: TablaTareas
     }
 ];
 

@@ -1,5 +1,5 @@
 <script>
-import {IconSearch} from "@tabler/icons-vue";
+//import {IconSearch} from "@tabler/icons-vue";
 export default {
     computed: {
         clientesExists() {
@@ -13,19 +13,21 @@ export default {
         },
         articulosExists() {
             return this.$router.hasRoute(" articulos ");
+        },
+        tareasExists() {
+            return this.$router.hasRoute("tareas");
         }
     },
     components: {
-        IconSearch
+        //IconSearch
     }
 };
 </script>
 
 <template>
-    <div class="mb-4">
-        <nav class="navbar navbar-expand-lg navbar-light bg-primary">
+    <div>
+        <nav class="navbar navbar-dark bg-primary">
             <div class="container-fluid">
-                <router-link to="/" class="navbar-brand text-white active" href="#">My Web</router-link>
                 <button
                     class="navbar-toggler"
                     type="button"
@@ -37,16 +39,34 @@ export default {
                 >
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div>
-                    <ul class="navbar-nav gap-4 d-flex align-content-between justify-content-between w-100">
+                <router-link to="/" class="navbar-brand">Inicio</router-link>
+                <router-link to="/clientes" class="navbar-brand">Clientes</router-link>
+                <!-- Mostrar enlaces solo si las rutas están definidas -->
+                <router-link v-if="tareasExists" to="/tareas" class="navbar-brand">Tareas</router-link>
+                <router-link v-if="articulosExists" to="/articulos" class="navbar-brand">Artículos</router-link>
+                <router-link v-if="ventasExists" to="/ventas" class="navbar-brand">Ventas</router-link>
+                <router-link v-if="contactoExists" to="/contacto" class="navbar-brand">Contacto</router-link>
+                <form class="d-flex">
+                    <input class="form-control me-2" type="search" placeholder="Búsqueda" aria-label="Search" />
+                    <button class="btn btn-outline-success btn-light btn-no-hover" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </form>
+                <!-- acordeón -->
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
                             <router-link to="/" class="nav-link">Inicio</router-link>
                         </li>
+
                         <li class="nav-item" v-if="clientesExists">
                             <router-link to="/clientes" class="nav-link">Clientes</router-link>
                         </li>
+                        <li class="nav-item" v-if="tareasExists">
+                            <router-link to="/tareas" class="nav-link">Tareas</router-link>
+                        </li>
                         <li class="nav-item" v-if="articulosExists">
-                            <router-link to="/articulos" class="nav-link">Articulos</router-link>
+                            <router-link to="/articulos" class="nav-link">Artículos</router-link>
                         </li>
                         <li class="nav-item" v-if="ventasExists">
                             <router-link to="/ventas" class="nav-link">Ventas</router-link>
@@ -56,12 +76,9 @@ export default {
                         </li>
                     </ul>
                 </div>
-                <form class="d-flex btn-prevent">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-                    <button class="btn btn-light" type="submit"><IconSearch></IconSearch></button>
-                </form>
             </div>
         </nav>
+        <router-view />
     </div>
 </template>
 

@@ -34,7 +34,7 @@ module.exports = {
                     {
                         loader: "file-loader",
                         options: {
-                            outputPath: "images" // Puedes ajustar la carpeta de salida segÃºn tus necesidades
+                            outputPath: "images" // Puedes ajustar la carpeta de salida según tus necesidades
                         }
                     }
                 ]

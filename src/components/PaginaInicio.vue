@@ -13,7 +13,7 @@ export default {
         <NavBar></NavBar>
     </div>
 
-    <div class="d-flex justify-content-center align-items-center gap-4">
+    <div class="d-flex justify-content-center align-items-center gap-4 mt-4">
         <button class="btn btn-primary">Gestion Clientes</button>
         <button class="btn btn-primary">Gestion Vendedores</button>
         <button class="btn btn-primary">Gestion Articulos</button>
