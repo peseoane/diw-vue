@@ -1,5 +1,4 @@
 <script>
-//import {IconSearch} from "@tabler/icons-vue";
 export default {
     computed: {
         clientesExists() {
@@ -25,8 +24,8 @@ export default {
 </script>
 
 <template>
-    <div>
-        <nav class="navbar navbar-dark bg-primary">
+    <div class="primary-set">
+        <nav class="navbar navbar-dark primary-set">
             <div class="container-fluid">
                 <button
                     class="navbar-toggler"

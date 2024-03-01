@@ -1,159 +1,38 @@
 <script>
-import Swal from "sweetalert2";
 import NavBar from "@/components/NavBar.vue";
-
+import Swal from "sweetalert2";
 export default {
     name: "TablaClientes",
     components: {
-        NavBar
+        NavBar    },
+
+    data() {
+        return {
+            clientes: [],
+            clienteSeleccionado: null,
+            dni: """
+            nombre: """
+            apellido: """
+            email: """       };
     },
+    mounted() {
+        this.obtenerClientes(); // Llama a la función para obtener clientes cuando el componente se monta
+    },
+
     methods: {
-        deleteCliente(index) {
-            this.clientes.splice(index, 1);
-        },
-        cleanForm() {
-            document.getElementById("nameForm").value = "";
-            document.getElementById("subnameForm").value = "";
-            document.getElementById("dniForm").value = "";
-            document.getElementById("emailForm").value = "";
+        // función para guardaro actualizar el cliente
 
-            this.mostrarAlerta("Campos eliminados", "info");
-        },
-        appendCliente() {
-            if (
-                this.nameForm === undefined ||
-                this.subnameForm === undefined ||
-                this.dniForm === undefined ||
-                this.emailForm === undefined
-            ) {
-                this.mostrarAlerta("Debe Completar los Campos", "warning");
-                return false;
-            }
-
-            if (
-                this.nameForm.trim() === "" ||
-                this.subnameForm.trim() === "" ||
-                this.dniForm.trim() === "" ||
-                this.emailForm.trim() === ""
-            ) {
-                this.mostrarAlerta("Debe Completar los Campos", "warning");
-                return false;
-            }
-
-            this.clientes.push({
-                id: this.clientes + 1,
-                nombre: this.nameForm,
-                apellido: this.subnameForm,
-                dni: this.dniForm,
-                email: this.emailForm
-            });
-        },
-        mostrarAlerta(mensaje, tipo) {
-            Swal.fire({
-                title: mensaje,
-                icon: tipo,
-                customClass: {
-                    container: "custom-alert-container",
-                    popup: "custom-alert",
-                    confirmButton: "custom-alert-button"
-                }
-            });
-        },
-        validarDNI() {
-            let dniNie = this.dniForm.trim().toUpperCase();
-            this.dniForm = dniNie;
-
-            let regexDniNie = /^[0-9XYZ][0-9]{7}[TRWAGMYFPDXBNJZSQVHLCKE]$/;
-
-            if (!regexDniNie.test(dniNie)) {
-                this.mostrarAlerta("DNI o NIE no valido", "error");
-                document.getElementById("dniForm").value = "";
-                return;
-            }
-
-            let numero = parseInt(dniNie.slice(0, 8), 10);
-            let letraCalculada = "";
-
-            if (dniNie.charAt(0) === "X" || dniNie.charAt(0) === "Y" || dniNie.charAt(0) === "Z") {
-                letraCalculada = "TRWAGMYFPDXBNJZSQVHLCKE".charAt(numero % 23);
-            } else {
-                letraCalculada = "TRWAGMYFPDXBNJZSQVHLCKE".charAt(numero % 23);
-            }
-
-            if (letraCalculada !== dniNie.charAt(8)) {
-                this.mostrarAlerta("DNI o NIE no valido", "error");
-                document.getElementById("dniForm").value = "";
-            }
-        },
-        modificarCliente(clienteId) {
-            const cliente = this.clientes.find(cliente => cliente.id === clienteId);
-
-            if (cliente) {
-                document.getElementById("nameForm").value = cliente.nombre;
-                document.getElementById("subnameForm").value = cliente.apellido;
-                document.getElementById("emailForm").value = cliente.email;
-                document.getElementById("dniForm").value = cliente.dni;
-            }
-        },
-        async eliminarCliente(clienteId) {
-            const confirmacion = await this.mostrarConfirmacionEliminar();
-
-            if (confirmacion) {
-                const index = this.clientes.findIndex(cliente => cliente.id === clienteId);
-
-                if (index !== -1) {
-                    await fetch(`http://localhost:3000/clientes/${clienteId}`, {
-                        method: "DELETE"
-                    });
-                    this.mostrarAlerta("Cliente eliminado correctamente", "success");
-                } else {
-                    this.mostrarAlerta("Cliente no encontrado", "error");
-                }
-            }
-        },
-        async postUsuario(user) {
-            try {
-                let response = await fetch("http://localhost:3000/clientes/${clienteId", {
-                    method: "POST",
-                    body: JSON.stringify(user),
-                    headers: {"Content-type": "aplication/json; charset=UTF-8"}
-                });
-
-                let usuarioCreado = await response.json();
-                this.clientes = [...this.clientes, usuarioCreado];
-            } catch (error) {
-                console.log(error);
-            }
-        },
-        async mostrarConfirmacionEliminar() {
-            // Mostrar ventana de confirmación
-            const confirmacion = await Swal.fire({
-                title: "¿Estás seguro de que deseas eliminar este cliente?",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Sí, eliminar",
-                cancelButtonText: "Cancelar",
-                customClass: {
-                    container: "custom-alert-container",
-                    popup: "custom-alert",
-                    confirmButton: "custom-alert-button",
-                    cancelButton: "custom-alert-button"
-                }
-            });
-
-            return confirmacion.isConfirmed;
-        }, // función para guardar o actualizar el cliente
         async guardarCliente() {
             try {
-                if (!this.validarDNI()) {
+                const validacionDniNie = this.validarDniNie(); // Validar DNI/NIE
+
+                if (validacionDniNie) {
                     // Crear el cliente con los datos del formulario
                     const cliente = {
-                        dni: this.dniForm.trim().toUpperCase(),
-                        nombre: this.nameForm.trim(),
-                        apellido: this.subnameForm.trim(),
-                        email: this.emailForm.trim()
+                        dni: this.dni.trim().toUpperCase(),
+                        nombre: this.nombre.trim(),
+                        apellido: this.apellido.trim(),
+                        email: this.email.trim()
                     };
 
                     let url = "http://localhost:3000/clientes";
@@ -179,141 +58,293 @@ export default {
                     }
 
                     // Limpiar el formulario y obtener la lista actualizada de clientes
-                    this.cleanForm();
-                    this.obtenerClientes();
+                    this.limpiar();
 
                     // Mostrar mensaje de éxito
                     const mensaje = this.clienteSeleccionado
                         ? "Cliente modificado correctamente."
                         : "Cliente guardado correctamente.";
 
+                    // Mostrar SweetAlert2 y ejecutar obtenerClientes() después de cerrar la ventana
                     Swal.fire({
                         icon: "success",
                         title: "Éxito",
-                        text: mensaje
+                        text: mensaje,
+                        showConfirmButton: true,
+                        confirmButtonText: "Cerrar"
+                    }).then(() => {
+                        this.obtenerClientes(); // Actualizar la lista de clientes
                     });
                 } else {
                     // Mostrar alerta de error de validación
                     this.mostrarAlerta("DNI o NIE no válido", "error");
-
-                    // Mostrar mensaje de error
-                    Swal.fire({
-                        icon: "error",
-                        title: "Error",
-                        text: "Error al guardar el cliente en el servidor."
-                    });
                 }
             } catch (error) {
                 console.error("Error al guardar el cliente:", error);
-            }
-        },
-        async obtenerClientes() {
-            try {
-                let response = await fetch("http://localhost:3000/clientes");
 
-                this.clientes = await response.json();
-            } catch (error) {
+                // Mostrar mensaje de error
                 Swal.fire({
                     icon: "error",
                     title: "Error",
-                    text: "No se puedieron cargar los datos"
+                    text: "Error al guardar el cliente en el servidor."
                 });
             }
+        },
+
+        // Validar DNI o NIE
+        validarDniNie() {
+            if (this.dni.length !== 0) {
+                const dniNie = this.dni.trim().toUpperCase(); // Convierte a mayúsculas para simplificar la validación
+
+                // Expresión regular para validar DNI y NIE
+                const regexDniNie = /^[0-9XYZ][0-9]{7}[TRWAGMYFPDXBNJZSQVHLCKE]$/;
+
+                if (!regexDniNie.test(dniNie)) {
+                    this.mostrarAlerta("DNI o NIE no válido", "error");
+                    return false;
+                }
+
+                // Validar el dígito de control
+                const valor = dniNie.replace(/^[XYZ]/, letra => {
+                    return letra === "X" ? "0" : letra === "Y" ? "1" : letra === "Z" ? "2" : letra;
+                });
+
+                const numero = parseInt(valor.slice(0, 9), 10);
+                let letraCalculada = "TRWAGMYFPDXBNJZSQVHLCKE".charAt(numero % 23);
+
+                if (letraCalculada !== dniNie.charAt(8)) {
+                    this.mostrarAlerta("DNI o NIE no válido", "error");
+                    return false;
+                }
+                // Devolver true si la validación es exitosa
+                return true;
+            }
+        },
+
+        // función para modificar el cliente que llama a la función limpiar y guardarCliente
+        modificarCliente(clienteId) {
+            const cliente = this.clientes.find(cliente => cliente.id === clienteId);
+
+            if (cliente) {
+                this.clienteSeleccionado = cliente; // Asegúrate de actualizar clienteSeleccionado
+                this.dni = cliente.dni;
+                this.nombre = cliente.nombre;
+                this.apellido = cliente.apellido;
+                this.email = cliente.email;
+
+                this.mostrarAlerta("Datos del cliente listos para modificar", "info");
+            } else {
+                this.mostrarAlerta("Cliente no encontrado", "error");
+            }
+        },
+
+        async obtenerClientes() {
+            try {
+                // Ahora hacemos una solicitud directamente al servidor JSON
+
+                const response = await fetch("http://localhost:3000/clientes"); // Cambia el puerto si es diferente
+
+                if (!response.ok) {
+                    throw new Error("No se pudieron obtener los datos del servidor.");
+                }
+
+                this.clientes = await response.json();
+            } catch (error) {
+                console.error("Error al obtener los clientes:", error);
+                // Puedes agregar manejo de errores aquí, por ejemplo, mostrar un mensaje al usuario
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: "No se pudieron obtener los datos del servidor."
+                });
+            }
+        },
+
+        // función para eliminar el cliente
+
+        async eliminarCliente(clienteId) {
+            // Mostrar ventana de confirmación
+            const confirmacion = await this.mostrarConfirmacionEliminar();
+
+            // Verificar si se confirmó la eliminación
+            if (confirmacion) {
+                // Realizar la lógica de eliminación
+                const index = this.clientes.findIndex(cliente => cliente.id === clienteId);
+
+                if (index !== -1) {
+                    //this.clientes.splice(index, 1);
+                    await fetch(`http://localhost:3000/clientes/${clienteId}`, {
+                        method: "DELETE"
+                    });
+                    // Mostrar alerta de éxito
+                    this.mostrarAlerta("Cliente eliminado correctamente", "success");
+                } else {
+                    // Mostrar alerta de error si el cliente no existe
+                    this.mostrarAlerta("Cliente no encontrado", "error");
+                }
+            }
+        },
+
+        // función  Limpiar campos del formulario
+        limpiar() {
+            // Lógica para limpiar los campos del formulario
+            this.nombre = "";
+            this.apellido = "";
+            this.dni = "";
+            this.email = "";
+
+            this.mostrarAlerta("Campos limpiados", "info");
+            return;
+        },
+
+        // Mostrar ventana alerta
+        mostrarAlerta(mensaje, tipo) {
+            Swal.fire({
+                title: mensaje,
+                icon: tipo,
+                customClass: {
+                    container: "custom-alert-container",
+                    popup: "custom-alert",
+                    confirmButton: "custom-alert-button"
+                }
+            });
+        },
+
+        // Mostrar ventana de confirmación
+
+        async mostrarConfirmacionEliminar() {
+            const confirmacion = await Swal.fire({
+                title: "¿Estás seguro de que deseas eliminar este cliente?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Sí, eliminar",
+                cancelButtonText: "Cancelar",
+                customClass: {
+                    container: "custom-alert-container",
+                    popup: "custom-alert",
+                    confirmButton: "custom-alert-button",
+                    cancelButton: "custom-alert-button"
+                }
+            });
+
+            return confirmacion.isConfirmed;
         }
-    },
-    mounted() {
-        this.obtenerClientes();
-        this.$refs.nombre.focus();
-    },
-    data() {
-        return {
-            clientes: []
-        };
     }
 };
 </script>
 
 <template>
     <div>
-        <NavBar></NavBar>
+        <NavBar />
     </div>
-
-    <div id="tabla-clientes" class="w-75 d-flex flex-column align-items-center container">
-        <h3>Gestion Clientes</h3>
-        <hr />
-
-        <div class="w-75 d-flex justify-content-center align-items-center flex-column gap-4">
-            <div class="w-75" id="form">
-                <div class="d-flex justify-content-center align-items-center flex-column gap-4 input-group">
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text" id="">Nombre: </span>
-                        </div>
-                        <input v-model="nameForm" ref="nombre" type="text" class="form-control" id="nameForm" />
+    <br />
+    <div class="row justify-content-center mt-4">
+        <h3 class="text-center font-weight-bold">Gestión Clientes</h3>
+    </div>
+    <hr />
+    <!-- formulario -->
+    <div class="container-fluid">
+        <div id="map_section" class="row justify-content-center align-items-center">
+            <div class="col-12 col-m-6 col-lg-8 mx-auto">
+                <form class="form-inline">
+                    <div class="input-group mb-3 w-25">
+                        <span class="input-group-text custom-span">DNI/NIE:</span>
+                        <input
+                            id="dni"
+                            v-model="dni"
+                            class="form-control form-control-sm"
+                            name="dni"
+                            placeholder="DNI Cliente"
+                            type="text"
+                            @blur="validarDniNie"
+                        />
+                    </div>
+                    <div class="input-group mb-3 w-75">
+                        <span class="input-group-text custom-span">Nombre:</span>
+                        <input
+                            id="nombre"
+                            ref="nombre"
+                            v-model="nombre"
+                            class="form-control"
+                            name="nombre"
+                            placeholder="Nombre Cliente"
+                            type="text"
+                        />
+                    </div>
+                    <div class="input-group mb-3 w-75">
+                        <span class="input-group-text custom-span">Apellidos:</span>
+                        <input
+                            id="apellido"
+                            v-model="apellido"
+                            class="form-control"
+                            name="apellido"
+                            placeholder="Apellidos Cliente"
+                            type="text"
+                        />
                     </div>
 
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text" id="">Apellidos: </span>
-                        </div>
-                        <input v-model="subnameForm" type="text" class="form-control" id="subnameForm" />
+                    <div class="input-group mb-3 w-50">
+                        <span class="input-group-text custom-span">Email:</span>
+                        <input
+                            id="email"
+                            v-model="email"
+                            class="form-control"
+                            name="email"
+                            placeholder="e-mail cliente"
+                            type="text"
+                        />
                     </div>
-
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text" id="">DNI: </span>
-                        </div>
-                        <input v-model="dniForm" type="text" class="form-control" id="dniForm" @blur="validarDNI" />
+                    <!-- Botones -->
+                    <div class="text-center">
+                        <button class="btn btn-primary m-2" type="button" @click="guardarCliente">Guardar</button>
+                        <button class="btn btn-secondary" type="button" @click="limpiar">Limpiar</button>
                     </div>
-
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text" id="">Email: </span>
-                        </div>
-                        <input v-model="emailForm" type="text" class="form-control" id="emailForm" />
-                    </div>
-                </div>
-
-                <div class="d-flex justify-content-center align-items-center gap-4 mt-2">
-                    <button @click="guardarCliente()" class="btn btn-primary">Guardar</button>
-                    <button @click="cleanForm()" class="btn btn-secondary">Limpiar</button>
-                </div>
+                </form>
             </div>
-            <hr />
         </div>
-
-        <table class="table table-striped">
-            <thead class="table-primary">
-                <tr>
-                    <th>Nombre</th>
-                    <th>Apellido</th>
-                    <th>DNI</th>
-                    <th>e-email</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="cliente in clientes" :key="cliente.id">
-                    <td>{{ cliente.nombre }}</td>
-                    <td>{{ cliente.apellido }}</td>
-                    <td>{{ cliente.dni }}</td>
-                    <td>{{ cliente.email }}</td>
-                    <td class="d-flex gap-4 justify-content-center">
-                        <button class="btn btn-danger" @click="eliminarCliente(cliente.id)">
-                            <IconTrash></IconTrash>
-                        </button>
-                        <button class="btn btn-warning" @click="modificarCliente(cliente.id)">
-                            <IconPencil></IconPencil>
-                        </button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+    </div>
+    <!-- tabla de datos el resto sería igual que antesa -->
+    <hr />
+    <div class="row justify-content-center mt-4">
+        <div class="col-md-8 bg-light">
+            <div class="row justify-content-center text-primary p-2">
+                <h5 class="text-center font-weight-bold">Listado Clientes</h5>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead class="table-primary">
+                        <tr>
+                            <th>DNI</th>
+                            <th>Apellido</th>
+                            <th>Nombre</th>
+                            <th>Correo Electrónico</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="cliente in clientes" :key="cliente.id">
+                            <td class="text-center">{{ cliente.dni }}</td>
+                            <td>{{ cliente.apellido }}</td>
+                            <td>{{ cliente.nombre }}</td>
+                            <td class="text-center">{{ cliente.email }}</td>
+                            <td class="text-center">
+                                <div>
+                                    <button class="btn btn-warning m-2" @click="modificarCliente(cliente.id)">
+                                        <i class="bi bi-pencil"></i>
+                                    </button>
+                                    <button class="btn btn-danger m-2" @click="eliminarCliente(cliente.id)">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </template>
 
-<style scoped>
-.btn-prevent :hover {
-    background-color: aliceblue;
-}
-</style>
+<style></style>

@@ -6,7 +6,7 @@ services:
         container_name: diw-mongo
         restart: always
         environment:
-            MONGO_INITDB_DATABASE: diw
+            MONGO_INITDB_DATABASE: bbdd
         ports:
             - 27017:27017
         volumes:

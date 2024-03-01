@@ -1,0 +1,26 @@
+:root {
+    --primary-color: #190482;
+    --secondary-color: #7752FE;
+    --terciary-color: #8E8FFA;
+    --light_color: #C2D9FF;
+
+}
+
+.primary-set {
+    background-color: var(--primary-color) !important;
+}
+
+th {
+    background-color: var(--secondary-color) !important;
+    color: white !important;
+}
+
+.btn-primary {
+    background-color: var(--secondary-color) !important;
+    border-color: var(--secondary-color) !important;
+}
+
+.btn-primary:hover {
+    background-color: var(--terciary-color) !important;
+    border-color: var(--terciary-color) !important;
+}
