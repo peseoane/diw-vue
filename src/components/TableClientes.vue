@@ -1,5 +1,4 @@
 <script>
-import {IconTrash, IconPencil} from "@tabler/icons-vue";
 import Swal from "sweetalert2";
 import NavBar from "@/components/NavBar.vue";
 
@@ -7,8 +6,6 @@ export default {
     name: "TablaClientes",
     components: {
         NavBar,
-        IconTrash,
-        IconPencil
     },
     methods: {
         deleteCliente(index) {
