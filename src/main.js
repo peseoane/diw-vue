@@ -1,18 +1,11 @@
 import {createApp} from "vue";
 import App from "./App.vue";
 import NavBar from "@/components/NavBar.vue";
-
-// Bootstrap assets
-import "bootstrap/dist/css/bootstrap.css";
-import "bootstrap-icons/font/bootstrap-icons.css";
 import router from "./router";
 
-// Custom Styles
+import "bootstrap/dist/css/bootstrap.css";
+import "bootstrap-icons/font/bootstrap-icons.css";
+
 import "./assets/basic.css";
-
-import axios from "axios";
-
-axios.defaults.baseURL = "http://localhost:3000";
-axios.defaults.headers.common["Authorization"] = "Barer " + localStorage.getItem("token");
 
 createApp(App).use(router).component("NavBar", NavBar).mount("#app");

@@ -8,10 +8,10 @@ export default {
             return this.$router.hasRoute("ventas ");
         },
         contactoExists() {
-            return this.$router.hasRoute(" contacto");
+            return this.$router.hasRoute("contacto");
         },
         articulosExists() {
-            return this.$router.hasRoute(" articulos ");
+            return this.$router.hasRoute("articulos ");
         },
         tareasExists() {
             return this.$router.hasRoute("tareas");
@@ -26,28 +26,39 @@ export default {
 <template>
     <div class="primary-set">
         <nav class="navbar navbar-dark primary-set">
-            <div class="container-fluid">
-                <button
-                    class="navbar-toggler"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#navbarSupportedContent"
-                    aria-controls="navbarSupportedContent"
-                    aria-expanded="false"
-                    aria-label="Toggle navigation"
+            <div class="container-fluid justify-content-around">
+                <router-link to="/" class="navbar-brand">
+                    <i class="bi bi-house-door-fill"></i>
+                    Inicio</router-link
                 >
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <router-link to="/" class="navbar-brand">Inicio</router-link>
-                <router-link to="/clientes" class="navbar-brand">Clientes</router-link>
-                <!-- Mostrar enlaces solo si las rutas están definidas -->
-                <router-link v-if="tareasExists" to="/tareas" class="navbar-brand">Tareas</router-link>
-                <router-link v-if="articulosExists" to="/articulos" class="navbar-brand">Artículos</router-link>
-                <router-link v-if="ventasExists" to="/ventas" class="navbar-brand">Ventas</router-link>
+                <router-link to="/clientes" class="navbar-brand">
+                    <i class="bi bi-person-circle"></i>
+                    Clientes</router-link
+                >
+                <router-link v-if="tareasExists" to="/tareas" class="navbar-brand">
+                    <i class="bi bi-table"></i>
+                    Tareas</router-link
+                >
+                <router-link v-if="articulosExists" to="/articulos" class="navbar-brand">
+                    <i class="bi bi-table"></i>
+                </router-link>
+                <router-link v-if="ventasExists" to="/ventas" class="navbar-brand">
+                    <i class="bi bi-table"></i>
+                </router-link>
                 <router-link v-if="contactoExists" to="/contacto" class="navbar-brand">Contacto</router-link>
                 <form class="d-flex">
-                    <input class="form-control me-2" type="search" placeholder="Búsqueda" aria-label="Search" />
-                    <button class="btn btn-outline-success btn-light btn-no-hover" type="submit">
+                    <input
+                        class="form-control me-2"
+                        type="search"
+                        placeholder="No implementado"
+                        aria-label="Search"
+                        disabled
+                    />
+                    <button
+                        class="btn btn-outline-success btn-light btn-no-hover"
+                        type="submit"
+                        title="No implementado"
+                    >
                         <i class="bi bi-search"></i>
                     </button>
                 </form>
@@ -81,12 +92,4 @@ export default {
     </div>
 </template>
 
-<style scoped>
-a {
-    color: white !important;
-}
-
-a:hover {
-    color: black !important;
-}
-</style>
+<style scoped></style>

@@ -1,9 +1,24 @@
 :root {
-    --primary-color: #190482;
-    --secondary-color: #7752FE;
-    --terciary-color: #8E8FFA;
-    --light_color: #C2D9FF;
+    --primary-color: #3d3929;
+    --secondary-color: #7d5e35;
+    --terciary-color: #9f845d;
+    --light_color: #e0d6c4;
+    --dark-color: #0b0b08;
+    --accent1-color: #5d4532;
+    --accent2-color: #8e6c34;
+    --accent3-color: #bdbab5;
+    --success-color: #49a028;
+    --warning-color: #fdbf2f;
+    --danger-color: #ed1759;
+    --white-color: #ffffff;
+}
 
+.background-primary {
+    background-color: var(--primary-color) !important;
+}
+
+.background-secondary {
+    background-color: var(--secondary-color) !important;
 }
 
 .primary-set {
@@ -12,7 +27,7 @@
 
 th {
     background-color: var(--secondary-color) !important;
-    color: white !important;
+    color: var(--white-color) !important;
 }
 
 .btn-primary {
@@ -23,4 +38,7 @@ th {
 .btn-primary:hover {
     background-color: var(--terciary-color) !important;
     border-color: var(--terciary-color) !important;
+}
+
+body {
 }

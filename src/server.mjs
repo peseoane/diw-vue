@@ -31,6 +31,6 @@ server.listen(app.get("port"), () => {
 });
 
 
-mongoose.connect("mongodb://localhost:27017/bbdd")
+mongoose.connect("mongodb://127.0.0.1:27017/bbdd")
     .then(db => console.log("Conectado a la base de datos"))
     .catch(error => "Error al conectar a la base de datos");

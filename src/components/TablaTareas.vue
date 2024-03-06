@@ -4,24 +4,27 @@ import Swal from "sweetalert2";
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
 import {format} from "date-fns";
+import FooterPedro from "@/components/FooterPedro.vue";
 
 export default {
     name: "TablaClientes",
     components: {
+        FooterPedro,
         NavBar
     },
     data() {
         return {
-            nombre: """
-            descripcion: """
-            fecha: """
+            nombre: "",
+            descripcion: "",
+            fecha: "",
+            sala: "",
             equipos: [],
-            prioridad: ""alta"
+            prioridad: "alta",
             tareas: [],
-            observaciones: """
+            observaciones: "",
             archivo: null,
             show: false
-        };;
+        };
     },
     created() {
         this.obtenerTareas();
@@ -103,23 +106,35 @@ export default {
         },
         async eliminarTarea(id) {
             try {
-                console.log("http://localhost:5000/tareas/", id);
-                const res = await fetch(`http://localhost:5000/tareas/${id}`, {
-                    method: "DELETE"
+                const confirmation = await Swal.fire({
+                    title: "Seguro que quieres eliminar la tarea?",
+                    text: "No podrás revertir esta acción.",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    cancelButtonText: "Cancelar",
+                    confirmButtonText: "Sí, eliminar"
                 });
 
-                if (!res.ok) {
-                    const message = `An error has occured: ${res.status}`;
-                    throw new Error(message);
+                if (confirmation.isConfirmed) {
+                    const res = await fetch(`http://localhost:5000/tareas/${id}`, {
+                        method: "DELETE"
+                    });
+
+                    if (!res.ok) {
+                        const message = `¡Error! Motivo: ${res.status}`;
+                        throw new Error(message);
+                    }
+
+                    await Swal.fire({
+                        icon: "success",
+                        title: "Tarea eliminada",
+                        text: "La tarea se ha eliminado correctamente."
+                    });
+
+                    await this.obtenerTareas();
                 }
-
-                await Swal.fire({
-                    icon: "success",
-                    title: "Tarea eliminada",
-                    text: "La tarea se ha eliminado correctamente."
-                });
-
-                await this.obtenerTareas();
             } catch (error) {
                 console.error(error);
 
@@ -183,10 +198,8 @@ export default {
         },
         async modificarTarea() {
             try {
-                // Obtener la tarea seleccionada
                 const tarea = this.tareaSeleccionada;
 
-                // Actualizar los campos de la tarea seleccionada con los nuevos valores del formulario
                 tarea.nombre = this.nombre;
                 tarea.descripcion = this.descripcion;
                 tarea.fecha = this.fecha;
@@ -195,7 +208,6 @@ export default {
                 tarea.prioridad = this.prioridad;
                 tarea.observaciones = this.observaciones;
 
-                // Enviar la solicitud PUT con la tarea actualizada al servidor
                 const res = await fetch(`http://localhost:5000/tareas/${tarea._id}`, {
                     method: "PUT",
                     headers: {
@@ -208,24 +220,19 @@ export default {
                     throw new Error(`An error has occurred: ${res.status}`);
                 }
 
-                // Actualizar la lista de tareas después de modificar la tarea
                 await this.obtenerTareas();
 
-                // Limpiar los campos del formulario después de modificar la tarea
                 this.limpiarCampos();
 
-                // Mostrar mensaje de éxito
                 await Swal.fire({
                     icon: "success",
                     title: "Tarea modificada",
                     text: "La tarea se ha modificado correctamente."
                 });
 
-                // Limpiar la tarea seleccionada después de la modificación
                 this.tareaSeleccionada = null;
             } catch (error) {
                 console.error(error);
-                // Mostrar mensaje de error
                 await Swal.fire({
                     icon: "error",
                     title: "Error al modificar la tarea",
@@ -238,9 +245,7 @@ export default {
 </script>
 
 <template>
-    <div>
-        <NavBar></NavBar>
-    </div>
+    <NavBar></NavBar>
 
     <div id="tabla-clientes" class="w-75 mt-4 d-flex flex-column align-items-center container">
         <h3>Gestion Tareas</h3>
@@ -446,6 +451,7 @@ export default {
             </tbody>
         </table>
     </div>
+    <footer-pedro></footer-pedro>
 </template>
 
 <style scoped>

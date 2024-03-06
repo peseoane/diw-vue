@@ -2,6 +2,7 @@ import express from "express";
 const rutas = express.Router();
 import tarea from "../models/tarea.mjs";
 import multer from "multer";
+import Tarea from "../models/tarea.mjs";
 
 // Importante, sin este campo no reconoce
 rutas.use(express.json());
@@ -12,7 +13,7 @@ const upload = multer({dest: "uploads/"});
 rutas.post("/", upload.single("archivo"), async (req, res) => {
     try {
         if (req.file) {
-            const nuevatarea = new tarea(req.body);
+            const nuevatarea = new Tarea(req.body);
             await nuevatarea.save();
             res.json({
                 status: "Tarea guardada"

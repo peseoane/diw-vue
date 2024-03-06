@@ -1,11 +1,40 @@
 {
   "clientes": [
     {
+      "id": "7",
+      "dni": "11111111H",
+      "alta": "01/10/2023",
+      "apellido": "Ruiz Solla",
+      "nombre": "Alvaro",
+      "direccion": "Calle Santiago Mayor, 34",
+      "provincia": "A Coruña",
+      "municipio": "Bergondo",
+      "movil": 654789456,
+      "email": "alfredo@mail.com"
+    },
+    {
+      "id": "8",
+      "dni": "Y2345678Z",
+      "alta": "31/10/2023",
+      "apellido": "Salam Alí",
+      "nombre": "Jasmina",
+      "direccion": "Calle Muralla, 2",
+      "provincia": "Lugo",
+      "municipio": "Láncara",
+      "movil": 775645654,
+      "email": "jasmina@cole.com"
+    },
+    {
+      "id": "9",
       "dni": "44564564V",
-      "nombre": "Isabel2",
+      "alta": "06/11/2023",
       "apellido": "Santos Álvarez",
-      "email": "isabel@correo.com",
-      "id": "9"
+      "nombre": "Isabel",
+      "direccion": "Calle Solano, 23, 11ºg",
+      "provincia": "Madrid",
+      "municipio": "Madrid",
+      "movil": 756789456,
+      "email": "isabel@correo.com"
     },
     {
       "id": "10",
@@ -200,6 +229,18 @@
       "email": "andreu@microchof.com"
     },
     {
+      "id": "26",
+      "dni": "69888610M",
+      "alta": "01/11/2023",
+      "apellido": "Sánchez Coll",
+      "nombre": "Andreu",
+      "direccion": "Calle Juderías, 3 2ºa",
+      "provincia": "Girona",
+      "municipio": "Girona",
+      "movil": 652235648,
+      "email": "sara@microchof.com"
+    },
+    {
       "id": "27",
       "dni": "36652671D",
       "alta": "03/10/2023",
@@ -296,6 +337,27 @@
       "apellido": "Abalde",
       "email": "maria@abal.es",
       "id": "002d"
+    },
+    {
+      "id": "3237",
+      "dni": "11111111H",
+      "nombre": "Alvaroqw",
+      "apellido": "Ruiz Solla",
+      "email": "pepe@pepe.com"
+    }
+  ],
+  "personas": [
+    {
+      "id": "2",
+      "dni": "Y2345678Z",
+      "alta": "31/10/2023",
+      "apellido": "Salam Alí",
+      "nombre": "Jasmina",
+      "direccion": "Calle Muralla, 2",
+      "provincia": "Lugo",
+      "municipio": "Láncara",
+      "movil": 775645654,
+      "email": "led@led.com"
     }
   ]
 }
