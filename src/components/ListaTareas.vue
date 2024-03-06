@@ -37,12 +37,22 @@
 </template>
 
 <script>
-import axios from "axios";
 export default {
     name: "ListaTareas",
+    data: function () {
+        return {
+            tareaDefault: "",
+            listaTareas: [],
+            listaTareasCompletadas: []
+        };
+    },
     methods: {
         agregarTarea() {
-            this.listaTareas.push({text: this.tareaDefault, date: new Date().toLocaleString(), completada: false});
+            this.listaTareas.push({
+                text: this.tareaDefault,
+                date: new Date().toLocaleString(),
+                completada: false
+            });
         },
         eliminarTareas() {
             this.listaTareas = [];
@@ -60,26 +70,7 @@ export default {
                 this.listaTareasCompletadas.push(currentTarea);
             }
             //this.eliminarTarea(index);
-        },
-        fetchData() {
-            // Realizar una solicitud GET a una URL de ejemplo
-            axios
-                .get("http://localhost:8000/api/sessiontest.php")
-                .then(response => {
-                    this.data = response.data;
-                    console.log(this.data);
-                })
-                .catch(error => {
-                    // Manejar errores
-                    console.error("Error al realizar la solicitud:", error);
-                });
         }
-    },
-    data() {
-        return {
-            listaTareas: [],
-            listaTareasCompletadas: []
-        };
     },
     mounted() {}
 };

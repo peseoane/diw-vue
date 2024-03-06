@@ -1,6 +1,5 @@
 <script setup>
 import {useRouter} from "vue-router";
-import Nav from "@/App.vue";
 import {faker} from "@faker-js/faker/locale/pt_PT";
 
 const router = useRouter();

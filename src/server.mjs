@@ -3,7 +3,7 @@ import http from "http";
 import morgan from "morgan";
 import tareasRouter from "./router/tareas.mjs";
 import mongoose from "mongoose";
-import cors from 'cors';
+import cors from "cors";
 
 const app = express();
 const server = http.createServer(app);
@@ -25,6 +25,6 @@ server.listen(app.get("port"), () => {
 });
 
 mongoose
-    .connect("mongodb://localhost:27017/diw-vue")
+    .connect("mongodb://localhost:27017/bbdd")
     .then(db => console.log("Conectado a la base de datos"))
     .catch(error => "Error al conectar a la base de datos");
